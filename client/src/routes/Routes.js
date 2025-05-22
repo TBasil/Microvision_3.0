@@ -1,7 +1,7 @@
 // client/src/routes/Routes.js
 import { Routes, Route } from 'react-router-dom';
 
-import Login from '../pages/Login';
+//  Login from '../pages/Login';
 import Register from '../pages/Register';
 import Dashboard from '../pages/Pathologist/Dashboard';
 import AdminDashboard from '../pages/Admin/Dashboard';
@@ -12,6 +12,7 @@ import SharedWithMe from '../pages/SharedWithMe';
 import Messages from '../pages/Messages';
 import BlogUpload from '../pages/BlogUpload';
 import BlogList from '../pages/BlogList';
+import Login from '../Pages/Login';
 
 export default function AppRoutes() {
   return (
