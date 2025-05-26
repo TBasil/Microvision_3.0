@@ -8,32 +8,18 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-
-    // Placeholder API call
-    try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // TODO: Save token, user info in AuthContext
-        console.log('Login successful:', data);
-        if (data.role === 'admin') {
-          navigate('/admin/dashboard');
-        } else {
-          navigate('/dashboard');
-        }
-      } else {
-        setError(data.message || 'Login failed');
-      }
-    } catch (err) {
-      setError('Something went wrong. Try again.');
+    
+    // Mock login logic
+    if (email === 'admin@example.com' && password === 'admin123') {
+      console.log('Admin login');
+      navigate('/admin/dashboard');
+    } else if (email === 'doc@example.com' && password === 'doc123') {
+      console.log('Pathologist login');
+      navigate('/dashboard');
+    } else {
+      setError('Invalid credentials');
     }
   };
 

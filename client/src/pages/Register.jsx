@@ -17,30 +17,16 @@ export default function Register() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleRegister = async (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
-
-    try {
-      const response = await fetch('/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setSuccess('Registered successfully! Wait for admin approval.');
-        setForm({ name: '', email: '', password: '', medicalId: '' });
-        setTimeout(() => navigate('/login'), 2000);
-      } else {
-        setError(data.message || 'Registration failed');
-      }
-    } catch (err) {
-      setError('Something went wrong. Try again.');
-    }
+    
+    // Simulate success
+    setSuccess('Registered successfully! Wait for admin approval.');
+    setForm({ name: '', email: '', password: '', medicalId: '' });
+    
+    setTimeout(() => {
+      navigate('/login');
+    }, 2000);
   };
 
   return (
