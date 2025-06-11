@@ -1,22 +1,23 @@
-// client/src/routes/Routes.js
 import { Routes, Route } from 'react-router-dom';
 
-//  Login from '../pages/Login';
+import Home from '../pages/Home';
+import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Dashboard from '../pages/Pathologist/Dashboard';
 import AdminDashboard from '../pages/Admin/Dashboard';
-import UploadSlide from '../pages/UploadSlide';
-import MySlides from '../pages/MySlides';
-import Collections from '../pages/Collections';
-import SharedWithMe from '../pages/SharedWithMe';
-import Messages from '../pages/Messages';
-import BlogUpload from '../pages/BlogUpload';
-import BlogList from '../pages/BlogList';
-import Login from '../Pages/Login';
+import UploadSlide from '../pages/Pathologist/UploadSlide';
+import MySlides from '../pages/Pathologist/MySlides';
+import Collections from '../pages/Pathologist/Collections';
+import SharedWithMe from '../pages/Pathologist/SharedWithMe';
+import Messages from '../pages/Pathologist/Messages';
+import BlogUpload from '../pages/Pathologist/BlogUpload';
+import BlogList from '../pages/Pathologist/BlogList';
 
 export default function AppRoutes() {
   return (
     <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard" element={<Dashboard />} />
