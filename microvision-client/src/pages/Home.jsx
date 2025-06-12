@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import slideUploadImg from "@/assets/slide-upload.png";
 import annotationToolImg from "@/assets/annotation-tool.png";
 import messagingUiImg from "@/assets/messaging-ui.png";
-import pathologist1 from "@/assets/pathologist1.jpg";
-import pathologist2 from "@/assets/pathologist2.jpg";
-import pathologist3 from "@/assets/pathologist3.jpg";
+import pathologist1 from "@/assets/pathologist1.png";
+import pathologist2 from "@/assets/pathologist2.png";
+import pathologist3 from "@/assets/pathologist3.png";
 
 export default function Home() {
   const navigate = useNavigate();
