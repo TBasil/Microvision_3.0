@@ -1,4 +1,7 @@
+// microvision-client/src/routes/Routes.jsx
 import { Routes, Route } from 'react-router-dom';
+import ProtectedRoute from '../components/ui/ProtectedRoute';
+
 
 import Home from '../pages/Home';
 import Login from '../pages/Login';
@@ -16,19 +19,87 @@ import BlogList from '../pages/Pathologist/BlogList';
 export default function AppRoutes() {
   return (
     <Routes>
+      {/* Public Routes - No protection needed */}
       <Route path="/" element={<Home />} />
       <Route path="/home" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/admin/dashboard" element={<AdminDashboard />} />
-      <Route path="/upload" element={<UploadSlide />} />
-      <Route path="/myslides" element={<MySlides />} />
-      <Route path="/collections" element={<Collections />} />
-      <Route path="/shared" element={<SharedWithMe />} />
-      <Route path="/messages" element={<Messages />} />
-      <Route path="/blog" element={<BlogList />} />
-      <Route path="/blog/upload" element={<BlogUpload />} />
+      
+      {/* Admin Routes - Require admin role */}
+      <Route 
+        path="/admin/dashboard" 
+        element={
+          <ProtectedRoute requiredRole="admin">
+            <AdminDashboard />
+          </ProtectedRoute>
+        } 
+      />
+      
+      {/* Pathologist Routes - Require pathologist role */}
+      <Route 
+        path="/dashboard" 
+        element={
+          <ProtectedRoute requiredRole="pathologist">
+            <Dashboard />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/upload" 
+        element={
+          <ProtectedRoute requiredRole="pathologist">
+            <UploadSlide />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/myslides" 
+        element={
+          <ProtectedRoute requiredRole="pathologist">
+            <MySlides />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/collections" 
+        element={
+          <ProtectedRoute requiredRole="pathologist">
+            <Collections />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/shared" 
+        element={
+          <ProtectedRoute requiredRole="pathologist">
+            <SharedWithMe />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/messages" 
+        element={
+          <ProtectedRoute requiredRole="pathologist">
+            <Messages />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/blog" 
+        element={
+          <ProtectedRoute requiredRole="pathologist">
+            <BlogList />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/blog/upload" 
+        element={
+          <ProtectedRoute requiredRole="pathologist">
+            <BlogUpload />
+          </ProtectedRoute>
+        } 
+      />
     </Routes>
   );
 }
