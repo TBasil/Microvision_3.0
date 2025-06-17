@@ -3,6 +3,9 @@ const cors = require('cors');
 const { Pool } = require('pg');
 require('dotenv').config();
 
+// ✅ Check if .env is being loaded
+console.log("📦 DATABASE_URL:", process.env.DATABASE_URL);
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -21,7 +24,7 @@ const pool = new Pool({
 // Test database connection
 pool.connect((err, client, release) => {
   if (err) {
-    console.error('Error connecting to database:', err);
+    console.error('❌ Error connecting to database:', err.message);
   } else {
     console.log('✅ Database connected successfully');
     release();
@@ -30,7 +33,10 @@ pool.connect((err, client, release) => {
 
 // Routes
 const authRoutes = require('./routes/auth');
+const adminRoutes = require('./routes/admin'); // ADD THIS LINE
+
 app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes); // ADD THIS LINE
 
 // Root endpoint
 app.get('/', (req, res) => {
