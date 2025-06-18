@@ -1,14 +1,58 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const BlogUpload = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ title, content, image });
-    alert("Blog published (simulated)!");
+
+    try {
+      setLoading(true);
+
+      // Placeholder image logic
+      let image_url = null;
+      if (image) {
+        // NOTE: This does NOT upload anywhere. It just simulates a preview URL.
+        image_url = URL.createObjectURL(image);
+      }
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("You must be logged in to post a blog.");
+        return;
+      }
+
+      const response = await axios.post(
+        "http://localhost:5000/api/blogs",
+        {
+          title,
+          content,
+          image_url,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      alert("✅ Blog published successfully!");
+      console.log(response.data);
+
+      // Reset form
+      setTitle("");
+      setContent("");
+      setImage(null);
+    } catch (error) {
+      console.error("❌ Error uploading blog:", error.response?.data || error.message);
+      alert("Blog upload failed.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -51,9 +95,12 @@ const BlogUpload = () => {
 
         <button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          disabled={loading}
+          className={`bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 ${
+            loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
         >
-          Publish Blog
+          {loading ? "Publishing..." : "Publish Blog"}
         </button>
       </form>
     </div>

@@ -33,10 +33,12 @@ pool.connect((err, client, release) => {
 
 // Routes
 const authRoutes = require('./routes/auth');
-const adminRoutes = require('./routes/admin'); // ADD THIS LINE
+const adminRoutes = require('./routes/admin'); // ✅ From main branch
+const blogRoutes = require('./routes/blog');   // ✅ From tayyab_blog
 
 app.use('/api/auth', authRoutes);
-app.use('/api/admin', adminRoutes); // ADD THIS LINE
+app.use('/api/admin', adminRoutes);
+app.use('/api/blogs', blogRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {

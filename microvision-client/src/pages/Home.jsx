@@ -7,6 +7,8 @@ import messagingUiImg from "@/assets/messaging-ui.png";
 import pathologist1 from "@/assets/pathologist1.png";
 import pathologist2 from "@/assets/pathologist2.png";
 import pathologist3 from "@/assets/pathologist3.png";
+import { Link } from 'react-router-dom';
+
 
 export default function Home() {
   const navigate = useNavigate();

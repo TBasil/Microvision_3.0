@@ -1,57 +1,85 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { motion } from "framer-motion";
 
 const BlogList = () => {
-  const blogs = [
-    {
-      id: 1,
-      title: "Advancements in Digital Pathology",
-      author: "Dr. Anjali Verma",
-      summary:
-        "Exploring how digital pathology is revolutionizing diagnosis and research workflows.",
-      date: "2025-05-24",
-    },
-    {
-      id: 2,
-      title: "AI in Histopathological Analysis",
-      author: "Dr. Ramesh Nair",
-      summary:
-        "Discussing the role of machine learning in improving slide analysis accuracy.",
-      date: "2025-05-22",
-    },
-    {
-      id: 3,
-      title: "Best Practices for Slide Annotation",
-      author: "Dr. Sunita Rao",
-      summary:
-        "Tips and standards for ensuring high-quality, collaborative slide annotations.",
-      date: "2025-05-20",
-    },
-  ];
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/blogs");
+        setBlogs(res.data.blogs);
+      } catch (error) {
+        console.error("❌ Error fetching blogs:", error.response?.data || error.message);
+        alert("Failed to load blogs");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Published Blogs</h1>
+    <div className="min-h-screen bg-gray-50 py-12 px-4">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-3xl font-bold text-gray-800 mb-2 text-center">
+          Published Blogs
+        </h1>
+        <p className="text-gray-600 text-center mb-10">
+          Explore recent insights, trends and research in digital pathology by our expert contributors.
+        </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {blogs.map((blog) => (
-          <div
-            key={blog.id}
-            className="bg-white border rounded-2xl shadow p-5 flex flex-col justify-between"
-          >
-            <div>
-              <h2 className="text-lg font-semibold mb-2">{blog.title}</h2>
-              <p className="text-sm text-gray-600 mb-2">
-                by {blog.author} on {blog.date}
-              </p>
-              <p className="text-sm text-gray-700">{blog.summary}</p>
-            </div>
-            <div className="mt-4">
-              <button className="text-blue-600 text-sm hover:underline">
-                Read More
-              </button>
-            </div>
+        {loading ? (
+          <p className="text-center text-gray-500">Loading blogs...</p>
+        ) : blogs.length === 0 ? (
+          <p className="text-center text-gray-500">No blogs available.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {blogs.map((blog) => (
+              <motion.div
+                key={blog.id}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="bg-white rounded-2xl shadow-md transition duration-300 overflow-hidden"
+              >
+                {blog.image_url ? (
+                  <img
+                    src={blog.image_url}
+                    alt={blog.title}
+                    className="w-full h-40 object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-40 bg-gray-200 flex items-center justify-center text-sm text-gray-500">
+                    No image
+                  </div>
+                )}
+                <div className="p-5">
+                  <h2 className="text-xl font-semibold mb-2 text-gray-800">
+                    {blog.title}
+                  </h2>
+                  <p className="text-sm text-gray-500 mb-2">
+                    by {blog.author_name || "Unknown"} |{" "}
+                    {new Date(blog.created_at).toLocaleDateString()}
+                  </p>
+                  <p className="text-gray-700 text-sm">
+                    {blog.content.length > 150
+                      ? blog.content.slice(0, 150) + "..."
+                      : blog.content}
+                  </p>
+                  <a
+                    href="#"
+                    className="text-blue-600 text-sm hover:underline mt-3 inline-block"
+                  >
+                    Read More
+                  </a>
+                </div>
+              </motion.div>
+            ))}
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
