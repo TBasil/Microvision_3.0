@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
+import { useNavigate, Link } from "react-router-dom";
 
 const BlogList = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isPathologist = user?.role === "pathologist";
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -28,9 +32,20 @@ const BlogList = () => {
         <h1 className="text-3xl font-bold text-gray-800 mb-2 text-center">
           Published Blogs
         </h1>
-        <p className="text-gray-600 text-center mb-10">
+        <p className="text-gray-600 text-center mb-6">
           Explore recent insights, trends and research in digital pathology by our expert contributors.
         </p>
+
+        {isPathologist && (
+          <div className="flex justify-end mb-6">
+            <button
+              onClick={() => navigate("/blogs/upload")}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+            >
+              ➕ Write Blog
+            </button>
+          </div>
+        )}
 
         {loading ? (
           <p className="text-center text-gray-500">Loading blogs...</p>
@@ -57,9 +72,7 @@ const BlogList = () => {
                   </div>
                 )}
                 <div className="p-5">
-                  <h2 className="text-xl font-semibold mb-2 text-gray-800">
-                    {blog.title}
-                  </h2>
+                  <h2 className="text-xl font-semibold mb-2 text-gray-800">{blog.title}</h2>
                   <p className="text-sm text-gray-500 mb-2">
                     by {blog.author_name || "Unknown"} |{" "}
                     {new Date(blog.created_at).toLocaleDateString()}
@@ -69,12 +82,12 @@ const BlogList = () => {
                       ? blog.content.slice(0, 150) + "..."
                       : blog.content}
                   </p>
-                  <a
-                    href="#"
+                  <Link
+                    to={`/blogs/${blog.id}`}
                     className="text-blue-600 text-sm hover:underline mt-3 inline-block"
                   >
                     Read More
-                  </a>
+                  </Link>
                 </div>
               </motion.div>
             ))}

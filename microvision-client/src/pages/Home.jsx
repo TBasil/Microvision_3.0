@@ -9,7 +9,6 @@ import pathologist2 from "@/assets/pathologist2.png";
 import pathologist3 from "@/assets/pathologist3.png";
 import { Link } from 'react-router-dom';
 
-
 export default function Home() {
   const navigate = useNavigate();
 
@@ -20,6 +19,11 @@ export default function Home() {
   const handleRegister = () => {
     navigate('/register');
   };
+
+  //  Check if user is a logged-in pathologist
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
+  const isPathologist = user && user.role === "pathologist";
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -72,6 +76,18 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/*  Button to write blog (only for pathologists) */}
+      {isPathologist && (
+        <div className="flex justify-center mb-6">
+          <button
+            onClick={() => navigate('/upload-blog')}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          >
+            ✍️ Write a Blog
+          </button>
+        </div>
+      )}
 
       {/* Blog Highlights */}
       <section className="bg-gray-100 py-12 px-6">

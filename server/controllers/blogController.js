@@ -9,7 +9,7 @@ const pool = new Pool({
 // Create a new blog post
 const createBlog = async (req, res) => {
   const { title, content } = req.body;
-  const image_url = req.body.image_url || null; // Optional
+  const image_url = req.body.image_url || null;
 
   try {
     if (!title || !content) {
@@ -20,7 +20,7 @@ const createBlog = async (req, res) => {
     }
 
     const author_id = req.user.userId;
-    const author_name = req.user.email; // Ideally, you'd pull from full_name in DB
+    const author_name = req.user.email;
 
     const insertQuery = `
       INSERT INTO blogs (title, content, image_url, author_id, author_name)
@@ -43,7 +43,7 @@ const createBlog = async (req, res) => {
   }
 };
 
-// Fetch all blogs
+// Get all blogs
 const getAllBlogs = async (req, res) => {
   try {
     const result = await pool.query(
@@ -56,7 +56,29 @@ const getAllBlogs = async (req, res) => {
   }
 };
 
+// Get a blog by ID
+const getBlogById = async (req, res) => {
+  const blogId = req.params.id;
+
+  try {
+    const result = await pool.query(
+      'SELECT id, title, content, image_url, author_name, created_at FROM blogs WHERE id = $1',
+      [blogId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Blog not found' });
+    }
+
+    res.json({ success: true, blog: result.rows[0] });
+  } catch (error) {
+    console.error("❌ Error fetching blog by ID:", error.message);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   createBlog,
-  getAllBlogs
+  getAllBlogs,
+  getBlogById
 };

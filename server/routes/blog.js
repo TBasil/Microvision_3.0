@@ -3,7 +3,8 @@ const router = express.Router();
 
 const {
   createBlog,
-  getAllBlogs
+  getAllBlogs,
+  getBlogById
 } = require('../controllers/blogController');
 
 const {
@@ -11,12 +12,11 @@ const {
   requirePathologist
 } = require('../middleware/auth');
 
-// @route   GET /api/blogs
-// @desc    Get all blogs (public)
+// Public routes
 router.get('/', getAllBlogs);
+router.get('/:id', getBlogById);
 
-// @route   POST /api/blogs
-// @desc    Create a new blog (only for authenticated pathologists)
+// Pathologist-protected route
 router.post('/', authenticateToken, requirePathologist, createBlog);
 
 module.exports = router;

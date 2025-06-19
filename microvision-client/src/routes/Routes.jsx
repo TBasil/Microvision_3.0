@@ -2,7 +2,6 @@
 import { Routes, Route } from 'react-router-dom';
 import ProtectedRoute from '../components/ui/ProtectedRoute';
 
-
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
@@ -15,17 +14,18 @@ import SharedWithMe from '../pages/Pathologist/SharedWithMe';
 import Messages from '../pages/Pathologist/Messages';
 import BlogUpload from '../pages/Pathologist/BlogUpload';
 import BlogList from '../pages/Pathologist/BlogList';
+import BlogDetail from '../pages/Pathologist/BlogDetail'; 
 
 export default function AppRoutes() {
   return (
     <Routes>
-      {/* Public Routes - No protection needed */}
+      {/* Public Routes */}
       <Route path="/" element={<Home />} />
       <Route path="/home" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      
-      {/* Admin Routes - Require admin role */}
+
+      {/* Admin Routes */}
       <Route 
         path="/admin/dashboard" 
         element={
@@ -34,8 +34,8 @@ export default function AppRoutes() {
           </ProtectedRoute>
         } 
       />
-      
-      {/* Pathologist Routes - Require pathologist role */}
+
+      {/* Pathologist Routes */}
       <Route 
         path="/dashboard" 
         element={
@@ -93,10 +93,18 @@ export default function AppRoutes() {
         } 
       />
       <Route 
-        path="/blog/upload" 
+        path="/blogs/upload" 
         element={
           <ProtectedRoute requiredRole="pathologist">
             <BlogUpload />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/blogs/:id" 
+        element={
+          <ProtectedRoute requiredRole="pathologist">
+            <BlogDetail />
           </ProtectedRoute>
         } 
       />
