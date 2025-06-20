@@ -1,12 +1,12 @@
 const { Pool } = require('pg');
 
-// Use the same DB config as in server.js
+// Database config
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 
-// Create a new blog post
+// 📌 Create a new blog post
 const createBlog = async (req, res) => {
   const { title, content } = req.body;
   const image_url = req.body.image_url || null;
@@ -43,7 +43,7 @@ const createBlog = async (req, res) => {
   }
 };
 
-// Get all blogs
+// 📌 Fetch all blogs
 const getAllBlogs = async (req, res) => {
   try {
     const result = await pool.query(
@@ -56,7 +56,7 @@ const getAllBlogs = async (req, res) => {
   }
 };
 
-// Get a blog by ID
+// 📌 Get blog by ID
 const getBlogById = async (req, res) => {
   const blogId = req.params.id;
 
@@ -67,18 +67,20 @@ const getBlogById = async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ success: false, message: 'Blog not found' });
+      return res.status(404).json({ success: false, message: "Blog not found" });
     }
 
     res.json({ success: true, blog: result.rows[0] });
+
   } catch (error) {
     console.error("❌ Error fetching blog by ID:", error.message);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
+// ✅ Export functions
 module.exports = {
   createBlog,
   getAllBlogs,
-  getBlogById
+  getBlogById 
 };
